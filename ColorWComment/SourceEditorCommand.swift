@@ -61,7 +61,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                     invocation.buffer.lines[index] = newLine
                 }
             case .swift:
-                let newStringUIColor = "UIColor(displayP3Red: \(r), green: \(g), blue: \(b), alpha: \(a))"
+                let newStringUIColor = "UIColor(red: \(r), green: \(g), blue: \(b), alpha: \(a))"
                 let newStringColorLiteral = "#colorLiteral(red: \(r), green: \(g), blue: \(b), alpha: \(a))"
                 if let range = find(pattern: matchingSwiftUIColor, in: line) {
                     let newLine = line.replacingCharacters(in: range, with: newStringUIColor)
