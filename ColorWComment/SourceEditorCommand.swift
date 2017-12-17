@@ -89,10 +89,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
     
     func decodeColor(string: String) throws -> (r: Double, g: Double, b: Double, a: Double) {
         let matchingColor = "[0-9|a-z|A-Z]{6,8}"
-        let regex = try! NSRegularExpression(pattern: matchingColor, options: [])
-        guard let result = regex.matches(in: string, options: [], range: NSRange(string.startIndex..., in: string)).last
-            else { throw CommandError.failedToDecodeColor }
-        let range = Range(result.range, in: string)!
+        guard let range = find(pattern: matchingColor, in: string) else { throw CommandError.failedToDecodeColor }
         let hexString = string[range]
         
         var hexValue: UInt32 = 0
