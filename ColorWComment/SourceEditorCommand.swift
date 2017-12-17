@@ -57,7 +57,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                     invocation.buffer.lines[index] = newLine
                 } else {
                     let replacingIndex = line.index(before: commentRange.lowerBound)
-                    let newLine = line.replacingCharacters(in: replacingIndex...replacingIndex, with: newString + " ")
+                    let newLine = line.replacingCharacters(in: replacingIndex...replacingIndex, with: newString + "; ")
                     invocation.buffer.lines[index] = newLine
                 }
             case .swift:
