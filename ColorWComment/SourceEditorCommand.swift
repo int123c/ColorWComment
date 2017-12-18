@@ -31,9 +31,9 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
     }
     
     let matchingColorAfterComment = "//\\ ?#[0-9|a-z|A-Z]{6,8}"
-    let matchingObjectiveCUIColor = "\\[UIColor.*\\]"
-    let matchingSwiftUIColor = "UIColor\\(.*\\)"
-    let matchingSwiftColorLiteral = "#colorLiteral\\(.*\\)"
+    let matchingObjectiveCUIColor = "\\[UIColor.*?\\d\\ *?\\]"
+    let matchingSwiftUIColor = "UIColor\\(.*?\\d\\ *?\\)"
+    let matchingSwiftColorLiteral = "#colorLiteral\\(.*?\\d\\ *?\\)"
     
     func perform(
         with invocation: XCSourceEditorCommandInvocation,
@@ -65,7 +65,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                 let newStringColorLiteral = "#colorLiteral(red: \(r), green: \(g), blue: \(b), alpha: \(a))"
                 if let range = find(pattern: matchingSwiftUIColor, in: line) {
                     let newLine = line.replacingCharacters(in: range, with: newStringUIColor)
-                    invocation.buffer.lines[index] = newLine
+                    invocation.buffer.lines[index] = newLine // color
                 } else if let range = find(pattern: matchingSwiftColorLiteral, in: line) {
                     let newLine = line.replacingCharacters(in: range, with: newStringColorLiteral)
                     invocation.buffer.lines[index] = newLine
