@@ -51,7 +51,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             
             switch fileType {
             case .objectiveC:
-                let newString = "[UIColor colorWithRed:\(r) green:\(g) blue:\(b) alpha:\(a)]"
+                let newString = "[UIColor colorWithRed:\(r.d2) green:\(g.d2) blue:\(b.d2) alpha:\(a.d2)]"
                 if let range = find(pattern: matchingObjectiveCUIColor, in: line) {
                     let newLine = line.replacingCharacters(in: range, with: newString)
                     invocation.buffer.lines[index] = newLine
@@ -61,8 +61,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                     invocation.buffer.lines[index] = newLine
                 }
             case .swift:
-                let newStringUIColor = "UIColor(red: \(r), green: \(g), blue: \(b), alpha: \(a))"
-                let newStringColorLiteral = "#colorLiteral(red: \(r), green: \(g), blue: \(b), alpha: \(a))"
+                let newStringUIColor = "UIColor(red: \(r.d2), green: \(g.d2), blue: \(b.d2), alpha: \(a.d2))"
+                let newStringColorLiteral = "#colorLiteral(red: \(r.d2), green: \(g.d2), blue: \(b.d2), alpha: \(a.d2))"
                 if let range = find(pattern: matchingSwiftUIColor, in: line) {
                     let newLine = line.replacingCharacters(in: range, with: newStringUIColor)
                     invocation.buffer.lines[index] = newLine // color
@@ -110,5 +110,11 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             return (r, g, b, a)
         default: throw CommandError.failedToDecodeColor
         }
+    }
+}
+
+extension Double {
+    var d2: String {
+        return String(format: "%.2f", self)
     }
 }
