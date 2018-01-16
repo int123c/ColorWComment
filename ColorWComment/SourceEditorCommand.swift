@@ -51,7 +51,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             
             switch fileType {
             case .objectiveC:
-                let newString = "[UIColor colorWithRed:\(r.d2) green:\(g.d2) blue:\(b.d2) alpha:\(a.d2)]"
+                let newString = "[UIColor colorWithRed:\(r.p) green:\(g.p) blue:\(b.p) alpha:\(a.p)]"
                 if let range = find(pattern: matchingObjectiveCUIColor, in: line) {
                     let newLine = line.replacingCharacters(in: range, with: newString)
                     invocation.buffer.lines[index] = newLine
@@ -61,8 +61,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                     invocation.buffer.lines[index] = newLine
                 }
             case .swift:
-                let newStringUIColor = "UIColor(red: \(r.d2), green: \(g.d2), blue: \(b.d2), alpha: \(a.d2))"
-                let newStringColorLiteral = "#colorLiteral(red: \(r.d2), green: \(g.d2), blue: \(b.d2), alpha: \(a.d2))"
+                let newStringUIColor = "UIColor(red: \(r.p), green: \(g.p), blue: \(b.p), alpha: \(a.p))"
+                let newStringColorLiteral = "#colorLiteral(red: \(r.p), green: \(g.p), blue: \(b.p), alpha: \(a.p))"
                 if let range = find(pattern: matchingSwiftUIColor, in: line) {
                     let newLine = line.replacingCharacters(in: range, with: newStringUIColor)
                     invocation.buffer.lines[index] = newLine // color
@@ -114,7 +114,19 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 }
 
 extension Double {
-    var d2: String {
-        return String(format: "%.2f", self)
+    var p: String {
+        return p(10)
+    }
+    
+    func p(_ precision: Int) -> String {
+        let string = String(self)
+        if string.count > precision + 2 {
+            return format(f: ".\(precision)")
+        }
+        return string
+    }
+    
+    func format(f: String) -> String {
+        return String(format: "%\(f)f", self)
     }
 }
